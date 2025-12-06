@@ -23,14 +23,15 @@ public class _1695C_zeroPath {
     private static boolean zeroPathExists(int row, int col, int sum, int[][] grid, int n, int m) {
         if (row >= n || col >= m) return false;
 
+        sum += grid[row][col];
         if (row == n - 1 && col == m - 1) {
-            return sum + grid[row][col] == 0;
+            return sum == 0;
         }
 
-        boolean right = zeroPathExists(row, col + 1, sum + grid[row][col], grid, n, m);
+        boolean right = zeroPathExists(row, col + 1, sum, grid, n, m);
         if (right) return true;
 
-        boolean down = zeroPathExists(row + 1, col, sum + grid[row][col], grid, n, m);
+        boolean down = zeroPathExists(row + 1, col, sum, grid, n, m);
         if (down) return true;
 
         return false;
