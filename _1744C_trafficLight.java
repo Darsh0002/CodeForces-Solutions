@@ -10,32 +10,31 @@ public class _1744C_trafficLight {
             char c = sc.next().charAt(0);
             String signals = sc.next();
 
-            System.out.println(minimalSeconds(c, signals, n));
+            System.out.println(minimalSeconds(c, signals + signals, n + n));
         }
     }
 
-    private static int minimalSeconds(char c, String signals, int n) {
-        if (c == 'g') return 0;
+    private static int minimalSeconds(char curr, String s, int n) {
+        if (curr == 'g') return 0;
         int ans = 0;
 
-        // Duplicate string to simulate circular array
-        String s = signals + signals;
+        // find last 'g'
+        int j = n - 1;
+        while (j >= 0 && s.charAt(j) != 'g') {
+            j--;
+        }
+        int d = 0;
 
-        for (int i = 0; i < n; i++) {
-
-            if (signals.charAt(i) == c) {
-
-                // find first 'g' after i
-                for (int j = i + 1; j < i + n; j++) {  // search within next n steps
-                    if (s.charAt(j) == 'g') {
-                        ans = Math.max(ans, j - i);
-                        break; // stop at first 'g'
-                    }
-                }
-
+        j--;
+        while (j >= 0) {
+            d++;
+            if (s.charAt(j) == curr) {
+                ans = Math.max(ans, d);
+            } else if (s.charAt(j) == 'g') {
+                d = 0;
             }
+            j--;
         }
         return ans;
     }
-
 }
