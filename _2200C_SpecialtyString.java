@@ -15,12 +15,11 @@ public class _2200C_SpecialtyString {
 
             for (int i = 0; i < n; i++) {
                 char c = s.charAt(i);
-                if (c != '*') {
-                    if (st.isEmpty() || st.peek() != c) {
-                        st.push(c);
-                    } else if (st.peek() == c) {
-                        st.pop();
-                    }
+
+                if (st.isEmpty() || st.peek() != c) {
+                    st.push(c);
+                } else if (st.peek() == c) {
+                    st.pop();
                 }
             }
 
