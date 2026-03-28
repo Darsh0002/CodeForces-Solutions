@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class _1511C_YetAnotherCardDeck {
@@ -10,25 +9,30 @@ public class _1511C_YetAnotherCardDeck {
             int n = sc.nextInt();
             int q = sc.nextInt();
 
-            List<Integer> arr = new ArrayList<>();
+            // store first position of every color
+            int[] firstPos = new int[51];
+            Arrays.fill(firstPos, -1);
 
-            for (int i = 0; i < n; i++) {
-                arr.add(sc.nextInt());
+            for (int i = 1; i <= n; i++) {
+                int color = sc.nextInt();
+
+                if (firstPos[color] == -1)
+                    firstPos[color] = i; // 1-indexed
             }
 
             while (q-- > 0) {
                 int color = sc.nextInt();
+                int ans = firstPos[color];
 
-                for (int i = 0; i < n; i++) {
-                    if (arr.get(i) == color) {
-                        System.out.print((i + 1) + " ");
+                System.out.print(ans + " ");
 
-                        int num = arr.remove(i);
-                        arr.addFirst(num);
-
-                        break;
+                // Update the positions of all colors that are above the queried color
+                for (int i = 1; i <= 50; i++) {
+                    if (firstPos[i] < ans) {
+                        firstPos[i]++;
                     }
                 }
+                firstPos[color] = 1; // Move the queried color to the top
             }
         }
     }
