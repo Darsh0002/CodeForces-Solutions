@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class _189A_CutRibbon {
@@ -11,18 +12,22 @@ public class _189A_CutRibbon {
 
         int[] arr = {a, b, c};
 
-        System.out.println(countPieces(n, arr));
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+
+        System.out.println(countPieces(n, arr, dp));
     }
 
-    private static int countPieces(int n, int[] arr) {
+    private static int countPieces(int n, int[] arr, int[] dp) {
         if (n == 0) return 0;
         if (n < 0) return Integer.MIN_VALUE;
+        if (dp[n] != -1) return dp[n];
 
-        int max = 0;
+        int max = Integer.MIN_VALUE;
         for (int i = 0; i < 3; i++) {
-            max = Math.max(max, 1 + countPieces(n - arr[i], arr));
+            max = Math.max(max, 1 + countPieces(n - arr[i], arr, dp));
         }
 
-        return max;
+        return dp[n] = max;
     }
 }
