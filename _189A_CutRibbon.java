@@ -9,21 +9,20 @@ public class _189A_CutRibbon {
         int b = sc.nextInt();
         int c = sc.nextInt();
 
-        int sum = a + b + c;
-        int min = Math.min(a, Math.min(b, c));
-        int max = Math.max(a, Math.max(b, c));
-        int mid = sum - min - max;
+        int[] arr = {a, b, c};
 
-        int ans = 0;
-        for (int k = 0; (k * max) <= n; k++) {
-            for (int j = 0; (j * mid) <= n; j++) {
-                for (int i = 0; (i * min) <= n; i++) {
-                    if ((min * i) + (mid * j) + (max * k) == n) {
-                        ans = Math.max(ans, i + j + k);
-                    }
-                }
-            }
+        System.out.println(countPieces(n, arr));
+    }
+
+    private static int countPieces(int n, int[] arr) {
+        if (n == 0) return 0;
+        if (n < 0) return Integer.MIN_VALUE;
+
+        int max = 0;
+        for (int i = 0; i < 3; i++) {
+            max = Math.max(max, 1 + countPieces(n - arr[i], arr));
         }
-        System.out.println(ans);
+
+        return max;
     }
 }
