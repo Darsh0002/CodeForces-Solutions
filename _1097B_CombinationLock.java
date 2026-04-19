@@ -11,20 +11,25 @@ public class _1097B_CombinationLock {
             a[i] = sc.nextInt();
         }
 
-        System.out.println(solve(0, 0, a, n) ? "YES" : "NO");
+        Boolean[][] dp = new Boolean[n][360];
+
+        System.out.println(solve(0, 0, dp, a, n) ? "YES" : "NO");
     }
 
-    private static boolean solve(int i, int curr, int[] a, int n) {
+    private static boolean solve(int i, int curr, Boolean[][] dp, int[] a, int n) {
+        curr = ((curr % 360) + 360) % 360; // normalize curr to 0–359
+
         if (i == n) {
-            return curr % 360 == 0;
+            return curr == 0;
         }
 
-        // left
-        if (solve(i + 1, curr - a[i], a, n)) return true;
+        if (dp[i][curr] != null)
+            return dp[i][curr];
 
-        // right
-        if (solve(i + 1, curr + a[i], a, n)) return true;
+        boolean left = solve(i + 1, curr - a[i], dp, a, n);
 
-        return false;
+        boolean right = solve(i + 1, curr + a[i], dp, a, n);
+
+        return dp[i][curr] = left || right;
     }
 }
