@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class _1195C_BasketballExercise {
@@ -17,36 +16,37 @@ public class _1195C_BasketballExercise {
         }
 
         long[][] dp = new long[n][3];
-        for (long[] row : dp) Arrays.fill(row, -1);
 
-        System.out.println(func(n - 1, 0, a, b, dp));
-    }
+        dp[0][0] = Math.max(a[0], b[0]);
+        dp[0][1] = b[0];
+        dp[0][2] = a[0];
 
-    private static long func(int i, int prev, long[] a, long[] b, long[][] dp) {
-        if (i == 0) {
-            if (prev == 0) return Math.max(a[i], b[i]);
+        long maxi = Math.max(dp[0][0], Math.max(dp[0][1], dp[0][2]));
 
-            return prev == 1 ? b[i] : a[i];
+        for (int i = 1; i < n; i++) {
+            for (int prev = 0; prev < 3; prev++) {
+                long ans = 0;
+
+                if (prev != 1) {
+                    long take = a[i] + dp[i - 1][1];
+                    long notTake = dp[i - 1][prev];
+
+                    ans = Math.max(take, notTake);
+                }
+
+                if (prev != 2) {
+                    long take = b[i] + dp[i - 1][2];
+                    long notTake = dp[i - 1][prev];
+
+                    ans = Math.max(ans, Math.max(take, notTake));
+                }
+
+                dp[i][prev] = ans;
+
+                maxi = Math.max(maxi, dp[i][prev]);
+            }
         }
 
-        if (dp[i][prev] != -1) return dp[i][prev];
-
-        long ans = 0;
-
-        if (prev != 1) {
-            long take = a[i] + func(i - 1, 1, a, b, dp);
-            long notTake = func(i - 1, prev, a, b, dp);
-
-            ans = Math.max(take, notTake);
-        }
-
-        if (prev != 2) {
-            long take = b[i] + func(i - 1, 2, a, b, dp);
-            long notTake = func(i - 1, prev, a, b, dp);
-
-            ans = Math.max(ans, Math.max(take, notTake));
-        }
-
-        return dp[i][prev] = ans;
+        System.out.println(maxi);
     }
 }
